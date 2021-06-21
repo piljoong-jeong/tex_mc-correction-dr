@@ -2,9 +2,19 @@
 % \acmSubmissionID{1234}
 \documentclass[acmtog,review]{acmart}
 
-
 \usepackage{booktabs} % For formal tables
 \usepackage{xcolor}
+\definecolor{steelblue}{rgb}{0.27, 0.51, 0.71}
+\newcommand{\PJ}[1]{\textcolor{steelblue}{\bfseries{PJ: {#1}}}}
+\usepackage{amsmath}
+% \usepackage{amssymb} % symbol already defined
+% \usepackage{newtxmath}
+% \usepackage{preamble-math}
+
+% \usepackage{newunicodechar}
+% \newunicodechar{⊕}{reg_op}
+
+\usepackage[T1]{fontenc}
 
 % TOG prefers author-name bib system with square brackets
 \citestyle{acmauthoryear}
@@ -115,6 +125,7 @@ Thanks to consistent evolution of SLAM (Simultaneous Localization and Mapping) a
 % \input{samplebody-journals}
 \input{sections/1_introduction.tex}
 \input{sections/2_previous_works.tex}
+\input{sections/3_methods.tex}
 
 
 \end{document}

@@ -1,0 +1,17 @@
+\section{Methods}
+
+\paragraph{Assumptions}
+Our goal is to minimize TSDF mesh noise fused from 
+a single, Lambertian-dominant indoor RGB-D frame. 
+Given the scenario, we assume that we know intrinsic, extrinsic parameters of camera used to capture the frame. 
+Specifically, we pre-computed input TSDF mesh $\mathcal{M}$ from 
+pair of GT color image $\mathcal{C}$ and depth image $\mathcal{D}$ with known intrinsic $K$, such that $\mathcal{M}=TSDF(K^-1(\mathcal{C}\oplus\mathcal{D}))$.
+Here, $\oplus$  denotes image registration operator. 
+We used popular SLAM framework [8] to generate $\mathcal{M}$ with voxel size as 2cm. 
+Since $\mathcal{D}$ is noisy measurement of real scene geometry, 
+$\mathcal{M}$, and its rendering $C$ have slightly different appearance compare with $\mathcal{C}$. 
+We additionally constraint that there are no strong texture changes 
+under geometrically close, flat surfaces (e.g., chessboard pattern on flat wall). 
+This assumption is used to ensure that strong radiance change is 
+only made from interaction between light and hit-point geometry within C. 
+We will elaborate this assumption later.
