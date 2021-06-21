@@ -1,0 +1,6 @@
+{
+    "latex-workshop.latex.autoBuild.cleanAndRetry.enabled": true,
+    "latex-workshop.latex.autoClean.run": "onBuilt",
+    "latex-workshop.latex.clean.subfolder.enabled": true,
+    "latex-workshop.latex.clean.fileTypes": [ "*.aux", "*.glo", "*.idx", "*.log", "*.toc", "*.ist", "*.acn", "*.acr", "*.alg", "*.bbl", "*.blg", "*.glg", "*.gls", "*.ilg", "*.ind", "*.lof", "*.lot", "*.maf", "*.mtc", "*.mtc1", "*.out", "*.synctex.gz", "*.fdb_latexmk", "*.fls"]
+}
