@@ -68,7 +68,7 @@
 %\renewcommand\shortauthors{Jeong, P. et al}
 
 \begin{teaserfigure}
-    \includegraphics[width=\textwidth]{figures/1_overview_rev3.png}
+    \includegraphics[width=\textwidth]{figures/0_teaser_overview_rev3.png}
     \caption{Overview of our method. (From top left) We saturate noisy vertices by rendering input TSDF mesh with virtually placed light source. We extract common-shared geometric clue between rendered input mesh and target color image. Differentiable renderer iteratively minimizes loss, which is the difference between clues from rendered input mesh and target Ground Truth color image. Orange, Yellow, and Blue inset shows difference between input mesh and optimized mesh. Our method successfully reduces noise in mesh vertices. Furthermore, our provided video shows input mesh that is being optimized (right-side of the video) as iteration continues, as well as the visualization of loss (left-side of the video) that is being minimized: \url{https://drive.google.com/file/d/10F_I89m5O-RWOIxocYoxG2QOkJc7YWlF/view?usp=sharing}}
     \label{fig:one}
 \end{teaserfigure}
@@ -112,8 +112,9 @@ Thanks to consistent evolution of SLAM (Simultaneous Localization and Mapping) a
 
 \maketitle
 
-\input{samplebody-journals}
-
+% \input{samplebody-journals}
+\input{sections/1_introduction.tex}
+\input{sections/2_previous_works.tex}
 
 
 \end{document}
