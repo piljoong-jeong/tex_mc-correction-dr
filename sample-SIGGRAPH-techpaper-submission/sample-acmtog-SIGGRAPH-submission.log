@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.22 (TeX Live 2021/W32TeX) (preloaded format=pdflatex 2021.6.21)  21 JUN 2021 13:05
+This is pdfTeX, Version 3.141592653-2.6-1.40.22 (TeX Live 2021/W32TeX) (preloaded format=pdflatex 2021.6.21)  21 JUN 2021 13:33
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -802,66 +802,66 @@ Package caption Info: float package is loaded.
 Package caption Info: End \AtBeginDocument code.
  Excluding 'CCSXML' comment.
 LaTeX Font Info:    Font shape `T1/LinuxLibertineT-TLF/m/n' will be
-(Font)              scaled to size 17.28pt on input line 126.
-LaTeX Font Info:    Trying to load font information for T1+LinuxBiolinumT-TLF on input line 126.
+(Font)              scaled to size 17.28pt on input line 113.
+LaTeX Font Info:    Trying to load font information for T1+LinuxBiolinumT-TLF on input line 113.
  (c:/texlive/2021/texmf-dist/tex/latex/libertine/T1LinuxBiolinumT-TLF.fd
 File: T1LinuxBiolinumT-TLF.fd 2017/03/20 (autoinst) Font definitions for T1/LinuxBiolinumT-TLF.
 )
 LaTeX Font Info:    Font shape `T1/LinuxBiolinumT-TLF/m/n' will be
-(Font)              scaled to size 17.28pt on input line 126.
+(Font)              scaled to size 17.28pt on input line 113.
 Package microtype Info: Loading generic protrusion settings for font family
 (microtype)             `LinuxBiolinumT-TLF' (encoding: T1).
 (microtype)             For optimal results, create family-specific settings.
 (microtype)             See the microtype manual for details.
 LaTeX Font Info:    Font shape `T1/LinuxLibertineT-TLF/m/n' will be
-(Font)              scaled to size 12.0pt on input line 126.
+(Font)              scaled to size 12.0pt on input line 113.
 LaTeX Font Info:    Font shape `T1/LinuxBiolinumT-TLF/m/n' will be
-(Font)              scaled to size 12.0pt on input line 126.
+(Font)              scaled to size 12.0pt on input line 113.
 LaTeX Font Info:    Font shape `T1/LinuxBiolinumT-TLF/m/n' will be
-(Font)              scaled to size 10.0pt on input line 126.
+(Font)              scaled to size 10.0pt on input line 113.
 <figures/1_overview_rev3.png, id=56, 937.5828pt x 313.17pt>
 File: figures/1_overview_rev3.png Graphic file (type png)
 <use figures/1_overview_rev3.png>
-Package pdftex.def Info: figures/1_overview_rev3.png  used on input line 126.
+Package pdftex.def Info: figures/1_overview_rev3.png  used on input line 113.
 (pdftex.def)             Requested size: 510.295pt x 170.44727pt.
 LaTeX Font Info:    Font shape `T1/LinuxBiolinumT-TLF/m/n' will be
-(Font)              scaled to size 9.0pt on input line 126.
+(Font)              scaled to size 9.0pt on input line 113.
 LaTeX Font Info:    Font shape `T1/LinuxBiolinumT-TLF/m/n' will be
-(Font)              scaled to size 8.0pt on input line 126.
+(Font)              scaled to size 8.0pt on input line 113.
 LaTeX Font Info:    Font shape `T1/LinuxLibertineT-TLF/m/n' will be
-(Font)              scaled to size 8.0pt on input line 126.
+(Font)              scaled to size 8.0pt on input line 113.
 LaTeX Font Info:    Font shape `OT1/LinuxLibertineT-TLF/m/n' will be
-(Font)              scaled to size 8.0pt on input line 126.
+(Font)              scaled to size 8.0pt on input line 113.
 Package microtype Info: Loading generic protrusion settings for font family
 (microtype)             `LinuxLibertineT-TLF' (encoding: OT1).
 (microtype)             For optimal results, create family-specific settings.
 (microtype)             See the microtype manual for details.
 LaTeX Font Info:    Font shape `OT1/LinuxLibertineT-TLF/m/n' will be
-(Font)              scaled to size 6.2pt on input line 126.
+(Font)              scaled to size 6.2pt on input line 113.
  (c:/texlive/2021/texmf-dist/tex/latex/microtype/mt-msa.cfg
 File: mt-msa.cfg 2006/02/04 v1.1 microtype config. file: AMS symbols (a) (RS)
 ) (c:/texlive/2021/texmf-dist/tex/latex/microtype/mt-msb.cfg
 File: mt-msb.cfg 2005/06/01 v1.0 microtype config. file: AMS symbols (b) (RS)
 )
 
-Class acmart Warning: A possible image without description on input line 126.
+Class acmart Warning: A possible image without description on input line 113.
 
-LaTeX Font Info:    Trying to load font information for TS1+LinuxLibertineT-TLF on input line 126.
+LaTeX Font Info:    Trying to load font information for TS1+LinuxLibertineT-TLF on input line 113.
 (c:/texlive/2021/texmf-dist/tex/latex/libertine/TS1LinuxLibertineT-TLF.fd
 File: TS1LinuxLibertineT-TLF.fd 2017/03/20 (autoinst) Font definitions for TS1/LinuxLibertineT-TLF.
 )
 LaTeX Font Info:    Font shape `TS1/LinuxLibertineT-TLF/m/n' will be
-(Font)              scaled to size 7.0pt on input line 126.
+(Font)              scaled to size 7.0pt on input line 113.
 Package microtype Info: Loading generic protrusion settings for font family
 (microtype)             `LinuxLibertineT-TLF' (encoding: TS1).
 (microtype)             For optimal results, create family-specific settings.
 (microtype)             See the microtype manual for details.
 LaTeX Font Info:    Font shape `TS1/LinuxLibertineT-TLF/m/n' will be
-(Font)              scaled to size 8.0pt on input line 126.
+(Font)              scaled to size 8.0pt on input line 113.
 LaTeX Font Info:    Font shape `T1/LinuxLibertineT-TLF/b/n' will be
-(Font)              scaled to size 8.0pt on input line 126.
+(Font)              scaled to size 8.0pt on input line 113.
 LaTeX Font Info:    Font shape `T1/LinuxLibertineT-TLF/m/it' will be
-(Font)              scaled to size 8.0pt on input line 126.
+(Font)              scaled to size 8.0pt on input line 113.
  (./samplebody-journals.tex
 LaTeX Font Info:    Font shape `T1/LinuxLibertineT-TLF/m/n' will be
 (Font)              scaled to size 6.0pt on input line 29.
@@ -953,15 +953,15 @@ Package rerunfilecheck Info: File `sample-acmtog-SIGGRAPH-submission.out' has no
 (rerunfilecheck)             Checksum: AE491BAE0AC696A37C37A045E0660417;1760.
  ) 
 Here is how much of TeX's memory you used:
- 21280 strings out of 478510
- 332209 string characters out of 5853586
- 784432 words of memory out of 5000000
- 38042 multiletter control sequences out of 15000+600000
- 603540 words of font info for 452 fonts, out of 8000000 for 9000
+ 21274 strings out of 478510
+ 332051 string characters out of 5853586
+ 781914 words of memory out of 5000000
+ 38039 multiletter control sequences out of 15000+600000
+ 603267 words of font info for 450 fonts, out of 8000000 for 9000
  1302 hyphenation exceptions out of 8191
  85i,17n,131p,1249b,805s stack positions out of 5000i,500n,10000p,200000b,80000s
 {c:/texlive/2021/texmf-dist/fonts/enc/dvips/libertine/lbtn_ncsllp.enc}{c:/texlive/2021/texmf-dist/fonts/enc/dvips/libertine/lbtn_25tcsq.enc}{c:/texlive/2021/texmf-dist/fonts/enc/dvips/libertine/lbtn_oexx6f.enc}{c:/texlive/2021/texmf-dist/fonts/enc/dvips/libertine/lbtn_afusau.enc}{c:/texlive/2021/texmf-dist/fonts/enc/dvips/libertine/lbtn_7grukw.enc}{c:/texlive/2021/texmf-dist/fonts/enc/dvips/libertine/lbtn_nh77jq.enc}{c:/texlive/2021/texmf-dist/fonts/enc/dvips/libertine/lbtn_naooyc.enc}{c:/texlive/2021/texmf-dist/fonts/enc/dvips/libertine/lbtn_76gpa5.enc}<c:/texlive/2021/texmf-dist/fonts/type1/public/newtx/LibertineMathMI.pfb><c:/texlive/2021/texmf-dist/fonts/type1/public/newtx/LibertineMathMI5.pfb><c:/texlive/2021/texmf-dist/fonts/type1/public/newtx/LibertineMathMI7.pfb><c:/texlive/2021/texmf-dist/fonts/type1/public/libertine/LinBiolinumT.pfb><c:/texlive/2021/texmf-dist/fonts/type1/public/libertine/LinBiolinumTI.pfb><c:/texlive/2021/texmf-dist/fonts/type1/public/libertine/LinLibertineT.pfb><c:/texlive/2021/texmf-dist/fonts/type1/public/libertine/LinLibertineTB.pfb><c:/texlive/2021/texmf-dist/fonts/type1/public/libertine/LinLibertineTI.pfb><c:/texlive/2021/texmf-dist/fonts/type1/public/newtx/NewTXMI7.pfb><c:/texlive/2021/texmf-dist/fonts/type1/public/newtx/txmiaX.pfb><c:/texlive/2021/texmf-dist/fonts/type1/public/txfonts/txsya.pfb><c:/texlive/2021/texmf-dist/fonts/type1/public/newtx/txsys.pfb>
-Output written on sample-acmtog-SIGGRAPH-submission.pdf (5 pages, 1531796 bytes).
+Output written on sample-acmtog-SIGGRAPH-submission.pdf (5 pages, 1530341 bytes).
 PDF statistics:
  425 PDF objects out of 1000 (max. 8388607)
  378 compressed objects within 4 object streams

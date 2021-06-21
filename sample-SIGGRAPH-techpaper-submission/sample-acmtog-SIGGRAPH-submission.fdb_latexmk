@@ -1,13 +1,13 @@
 # Fdb version 3
-["bibtex sample-acmtog-SIGGRAPH-submission"] 1624248338 "sample-acmtog-SIGGRAPH-submission.aux" "sample-acmtog-SIGGRAPH-submission.bbl" "sample-acmtog-SIGGRAPH-submission" 1624248342
+["bibtex sample-acmtog-SIGGRAPH-submission"] 1624248338 "sample-acmtog-SIGGRAPH-submission.aux" "sample-acmtog-SIGGRAPH-submission.bbl" "sample-acmtog-SIGGRAPH-submission" 1624249999
   "c:/texlive/2021/texmf-dist/bibtex/bst/acmart/ACM-Reference-Format.bst" 1623639597 89940 3b11b4d4a3d90816ac355a667d7f7f74 ""
-  "sample-acmtog-SIGGRAPH-submission.aux" 1624248341 9330 73654996c2ade5e2e1e72fe6ae6aa0d8 "pdflatex"
+  "sample-acmtog-SIGGRAPH-submission.aux" 1624249998 9330 73654996c2ade5e2e1e72fe6ae6aa0d8 "pdflatex"
   "sample-bibliography.bib" 1539541538 52824 71edc1a7d438e1de0b1079a3f91d9320 ""
   (generated)
-  "sample-acmtog-SIGGRAPH-submission.bbl"
   "sample-acmtog-SIGGRAPH-submission.blg"
-["pdflatex"] 1624248339 "c:/Users/cglab/Documents/Projects/tex_mc-correction-dr/sample-SIGGRAPH-techpaper-submission/sample-acmtog-SIGGRAPH-submission.tex" "sample-acmtog-SIGGRAPH-submission.pdf" "sample-acmtog-SIGGRAPH-submission" 1624248342
-  "c:/Users/cglab/Documents/Projects/tex_mc-correction-dr/sample-SIGGRAPH-techpaper-submission/sample-acmtog-SIGGRAPH-submission.tex" 1624248329 5102 91807a65288d497d204bedb8c679e736 ""
+  "sample-acmtog-SIGGRAPH-submission.bbl"
+["pdflatex"] 1624249996 "c:/Users/cglab/Documents/Projects/tex_mc-correction-dr/sample-SIGGRAPH-techpaper-submission/sample-acmtog-SIGGRAPH-submission.tex" "sample-acmtog-SIGGRAPH-submission.pdf" "sample-acmtog-SIGGRAPH-submission" 1624249999
+  "c:/Users/cglab/Documents/Projects/tex_mc-correction-dr/sample-SIGGRAPH-techpaper-submission/sample-acmtog-SIGGRAPH-submission.tex" 1624249995 4631 b5b655b601fa39c08ce57bc099878ed0 ""
   "c:/texlive/2021/texmf-dist/fonts/enc/dvips/libertine/lbtn_25tcsq.enc" 1623641195 2921 8ca0eb0831f9bc5da080d3697cfe67bf ""
   "c:/texlive/2021/texmf-dist/fonts/enc/dvips/libertine/lbtn_76gpa5.enc" 1623641195 2933 9ad527ce78d7c5fa0a642dead095f172 ""
   "c:/texlive/2021/texmf-dist/fonts/enc/dvips/libertine/lbtn_7grukw.enc" 1623641195 2934 a4a9158faed2e9e89c771b4e3b7fc12f ""
@@ -226,13 +226,13 @@
   "c:/texlive/2021/texmf.cnf" 1623642963 713 e69b156964470283e0530f5060668171 ""
   "figures/1_overview_rev3.png" 1623371292 1122226 515677e752a805f14ac7279f9afc3559 ""
   "figures/mouse.pdf" 1539541538 3107 a9ef93799213941d6fae78c91e185b8d ""
-  "sample-acmtog-SIGGRAPH-submission.aux" 1624248341 9330 73654996c2ade5e2e1e72fe6ae6aa0d8 "pdflatex"
+  "sample-acmtog-SIGGRAPH-submission.aux" 1624249998 9330 73654996c2ade5e2e1e72fe6ae6aa0d8 "pdflatex"
   "sample-acmtog-SIGGRAPH-submission.bbl" 1624248339 23129 958a63d40b374863c6592d9124826ebd "bibtex sample-acmtog-SIGGRAPH-submission"
-  "sample-acmtog-SIGGRAPH-submission.out" 1624248341 1760 ae491bae0ac696a37c37a045e0660417 "pdflatex"
-  "sample-acmtog-SIGGRAPH-submission.tex" 1624248329 5102 91807a65288d497d204bedb8c679e736 ""
+  "sample-acmtog-SIGGRAPH-submission.out" 1624249998 1760 ae491bae0ac696a37c37a045e0660417 "pdflatex"
+  "sample-acmtog-SIGGRAPH-submission.tex" 1624249995 4631 b5b655b601fa39c08ce57bc099878ed0 ""
   "samplebody-journals.tex" 1624241537 14137 ddf02d39f4b4d2bfa2c0e19d73124c65 ""
   (generated)
   "sample-acmtog-SIGGRAPH-submission.pdf"
+  "sample-acmtog-SIGGRAPH-submission.aux"
   "sample-acmtog-SIGGRAPH-submission.log"
   "sample-acmtog-SIGGRAPH-submission.out"
-  "sample-acmtog-SIGGRAPH-submission.aux"
