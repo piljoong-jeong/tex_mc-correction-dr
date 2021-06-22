@@ -13,5 +13,113 @@ $\mathcal{M}$, and its rendering $C$ have slightly different appearance compare 
 We additionally constraint that there are no strong texture changes 
 under geometrically close, flat surfaces (e.g., chessboard pattern on flat wall). 
 This assumption is used to ensure that strong radiance change is 
-only made from interaction between light and hit-point geometry within C. 
+only made from interaction between light and hit-point geometry within $C$. 
 We will elaborate this assumption later.
+
+We propose an optimization procedure that incrementally minimizes mesh vertex noises using differentiable rendering. 
+Suppose we have vertices $V=\{V_i\in\mathbb{R}^3\}=\{V_0...V_n\}$ within input mesh, we define deformed vertices $V_d$, which has same shape as $V$ initialized with zero values i.e., $V_d=\{\mathbf{0}_0,...,\mathbf{0}_n\}$. 
+For every iteration, $V_d$ is optimized so that resulting optimized vertices approximates noise-free geometry similar with $\mathcal{C}$.  
+The main problem is how find common geometric representations across different image types (here, rendered $\mathcal{M}$ fused from $\mathcal{D}$ and $\mathcal{C}$) 
+to figure out which region is to be optimized (i.e., noisy).
+
+\PJ{Too verbose! TODO: add proof}
+Our key observation is strong radiance change within $\mathcal{C}$, 
+is only occurred from strong geometric displacements around a corresponding pixel. 
+This is possible since we made two assumptions: Lambertian-dominant scene, and no strong texture changes under flat surface. 
+We are able to guarantee the first assumption since SLAM dataset is generated under the assumption.
+It is still open challenge as it is necessary condition for correspondences used to estimating relative camera pose, 
+as well as current depth sensing hardware fails to measure depth values lie on non-Lambertian surfaces. 
+By applying second assumption, we are able to intuitively know that 
+there is no sudden radiance change around point on noise-free surface. 
+Consider $\mathcal{C}$ is generated from perfect renderer 
+which are capable of tracing full light transport, under perfect geometries. 
+Although we cannot know which lighting conditions are used to render $\mathcal{C}$, 
+however, at least we know the lighting is somehow applied to 
+perfect geometries since $\mathcal{C}$ is rendered, as well as we are able to perceive geometric information by just observing $\mathcal{C}$. 
+Using the fact that $\mathcal{C}$ is a discretization of continuous radiance function, 
+we can intuitively notice that changing lighting condition 
+never affects to local radiance change (unless the light is very close to the surface).
+From this intuition, we can render $\mathcal{M}$ over virtually placed light source(s). 
+If $\mathcal{M}$ is noise-free enough, there would be no highlighted pixel in its rendering $C$. 
+However, due to the fact that $C$ is rendered with $\mathcal{C}$ from noisy measurement $\mathcal{D}$, 
+there exist a set of saturated pixel, which are actually not saturated within $\mathcal{C}$. 
+Based on this observation, we decided to minimize gap between saturated pixels in $C$ and unsaturated i.e., noise-free pixels in $\mathcal{C}$. 
+In order to do this, it is required to detect noise-free pixels in $\mathcal{C}$, as well as noisy pixels in $C$, 
+and set the difference as loss function so that our differentiable renderer properly minimizes gap.
+
+\subsection{Detecting Geometric Information given Color Image and Its Rendering}
+We simply detect noise-free surfaces within $\mathcal{C}$ by applying Scharr gradient kernel. 
+Under the assumption that the scene is Lambertian-dominant and there is no sudden strong texture changes around the same surface, 
+we found that this is enough to capture which region is smooth in terms of radiance (i.e., geometrically noise-free). 
+In order to ensure robustness on strong texture changes 
+one may combine with gradient from $\mathcal{D}$, but for this report we only experimented with gradients from $\mathcal{C}$. Specifically, Scharr kernel for each axis over an image is defined as
+\begin{equation}
+    \label{eqn:01}
+    G_x=\begin{pmatrix}
+        -3 & 0 & 3\\
+        -10 & 0 & 10\\
+        -3 & 0 & 3
+    \end{pmatrix}, 
+    G_y=\begin{pmatrix}
+        -3 & -10 & -3\\
+        0 & 0 & 0\\
+        3 & 10 & 3
+    \end{pmatrix}
+\end{equation}
+, and our detected geometric changes over Ground Truth color image $\widetilde{G}_\mathcal{C}$ is a Scharr gradient of $I_\mathcal{C}$ i.e., the intensity image from $\mathcal{C}$. 
+Since resulting gradient on some pixels have negative value of identical magnitude to positive values of neighboring pixel, we take its absolute value
+\begin{equation}
+    \label{eqn:02}
+    \widetilde{G}_\mathcal{C}=\frac{1}{2}\left(|G_x\left(I_\mathcal{C}\right)|+|G_y\left(I_\mathcal{C}\right)|\right)
+\end{equation}
+In order to detect noisy vertices over TSDF mesh, we propose Lightweight map to determine which vertex has stronger noise compare to $\widetilde{G}_\mathcal{C}$. 
+Lightweight map $I\textsubscript{lw}$ is an image taken from identical camera setup to $\mathcal{C}$, but holds how much a pixel corresponds to a hitpoint is affected by virtual light at a shading stage.
+$I\textsubscript{lw}$ is defined as
+\begin{equation}
+    I\textsubscript{lw}=\{I\textsubscript{lw,i}\in\mathbb{R}\textsuperscript{\textit{W}*\textit{H}}\}, I\textsubscript{lw,i}=\frac{\left(x_i-p_0\right)\cdot n_i}{d\left(x_i,p_0\right)+\epsilon}, 
+\end{equation}
+where $x_i$, $n_i$ is world position and normal of hitpoint with pixel index \textit{i}, respectively. 
+$p_0$ is position of virtual light, and $d\left(x_i, p_0\right)$ is Euclidean distance between hitpoint and light position.
+We obtain changing amount of each lightweight value $\widetilde{G}\textsubscript{lw}$ by applying Scharr kernel over $\textit{I}\textsubscript{lw}$, similar with $\widetilde{G}_\mathcal{C}$.
+\begin{equation}
+    \widetilde{G}_\textsubscript{lw}=\frac{1}{2}\left(|G_x\left(I\textsubscript{lw}\right)|+|G_y\left(I\textsubscript{lw}\right)|\right)
+\end{equation}
+We found that using geometric normal to calculate lightweight map saturate pixels around noisy vertices rather than shading normal, 
+as shading normal smooths normal of each hit-point using neighboring vertex normal and its barycentric coordinates. 
+In detail, pixels within same face have similar lightweight values 
+since they are both geometrically close to each other, and they share same normal. 
+Pixels that are geometrically close, but within different faces 
+are highly likely to have similar values if two faces have near identical normal values. 
+This is the case when two faces are considered as ‘flat’ to each other, 
+meaning that shared vertices have no noise. 
+As the vertex have bigger noise, the gap or normal between sharing two faces also gets bigger. 
+This brings pixels in $G\textsubscript{lw}$ have large value where there is significant normal difference, meaning that the region has noisy vertex. 
+Note that larger $G\textsubscript{lw}$ at a pixel means that the pixel has higher noise, therefore differentiable renderer can optimize the region more aggressively. 
+This is illustrated in Figure 3.
+We observed that the intensity image of rendered scene with virtual light $I_C$ serves similar role with $I\textsubscript{lw}$ as they properly reflect strong gradients around deviating normal.
+Therefore, we note that for all results we used $I_C$ instead of $I\textsubscript{lw}$.
+\begin{figure*}
+    \centering
+    \includegraphics[width=\textwidth]{figures/3_method_relationship_gradient_lightweight_and_noise_full_tone_changed.png}
+    \caption{Relationship between $G\textsubscript{lw}$ and actual noise of vertex $V$. We manually selected three pixels, where each have different magnitude of $G\textsubscript{lw}$. We also illustrated 1D example of the relationship. Gray and Purple lines and arrows indicate each face and its geometric normal. (a) $V$ is considered as noise-free since $G\textsubscript{lw}$ is evaluated as zero, meaning adjacent faces have identical normal value. (b) $G\textsubscript{lw}$ is increased as two faces have inconsistent normal. (c) as $G\textsubscript{lw}$ gets bigger, $V$ is considered as highly-noisy vertex. From these examples, we can say that $G\textsubscript{lw}$ precisely indicates where noisy pixels exist.}
+    \label{fig:three}
+\end{figure*}
+
+\subsection{Optimization using Differentiable Rendering}
+We define lightweight loss to minimize the difference between noise-free geometric information $\widetilde{G}_\mathcal{C}$ and noise-detected rendered image $\widetilde{G}_C$. We found that there is gradient value range inconsistency between $\widetilde{G}_\mathcal{C}$ and $\widetilde{G}_C$, as they are derived from different type of image i.e., color and geometry, respectively. We applied hyperbolic tangent kernel to each gradient image to ensure that both images have normalized value range, and we observed that this helped optimizer to find optimal without failure. Finally, we replace our target GT image from $\mathcal{C}$ to $\mathcal{C}\oplus\mathcal{D}$, as $\mathcal{M}$ follows holes where pixels in $\mathcal{D}$ have zero value. Our final geometric gradients are:
+\begin{equation}
+    G_\mathcal{C}=\tanh\left(\widetilde{G}_{\mathcal{C}\oplus\mathcal{D}}\right),
+    G_{lw}=\tanh\left(\widetilde{G}_{lw}\right), 
+\end{equation}
+where $\tanh\left(x\right)=\frac{e^x-e^{-x}}{e^x+e^{-x}}$. Our optimizer minimizes lightweight loss representing geometric difference, while penalizing vertices not to evolve too far from its initial position:
+\begin{gather}
+    \mathcal{L}=w_{lw}\cdot L_{lw}+w_{pos}\cdot L_{pos}, \\
+    L_{lw}=\left|\left|G_\mathcal{C}-G_C\right|\right|^2_2, \\
+    L_{pos}=\left|\left|V-\left(V_o\right)\right|\right|^2_2=\left|\left|V_d\right|\right|^2_2
+\end{gather}
+For all results, we used $w_{lw}=0.01$ and $w_{pos}=1.0$. Fig. 4 visualizes optimization procedure.
+\begin{figure}
+    \includegraphics[width=\columnwidth]{figures/3_method_optimization.png}
+    \caption{Optimization procedure of our differentiable rendering. From generated target noise-free geometric clue $G_\mathcal{C}$ and input noisy geometric clue $G_{lw}$, we minimize $L_2$ distance between two clues. Note that we additionally penalize aggressive vertex evolve, however it is skipped in the figure.}
+    \label{fig:four}
+\end{figure}
