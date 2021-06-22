@@ -10,15 +10,12 @@ and we are able to estimate camera poses from perfect correspondences from compu
 
 Capturing detailed geometry is still remain as technical challenge 
 due to hardware/computational limitation of SLAM. 
-It is obvious that consumer-level depth sensing technology 
-still has noisy observation. We can cope this 
-by divide a real scene with detailed (fine) voxels 
-as precise as possible when generating TSDF mesh. 
-In this way, however, unnecessarily large number of triangles 
-are generated even in the case of reconstructing simple geometry (e.g., plane). 
-This directly affects to rendering performance, 
-as rendering requires primitive traversal in order to 
-appropriately propagates lighting information for every single frame. 
+\PJ{TODO: actually, this is not true. Fine voxels can represent geometric detail but easily hindered by noise, whereas coarse mesh has resilience against noise but fails to represent where geometric detail is required e.g., edges}
+It is obvious that consumer-level depth sensing technology still has noisy observation. 
+We can cope this 
+by divide a real scene with detailed (fine) voxels as precise as possible when generating TSDF mesh. 
+In this way, however, unnecessarily large number of triangles are generated even in the case of reconstructing simple geometry (e.g., plane). 
+This directly affects to rendering performance, as rendering requires primitive traversal in order to appropriately propagates lighting information for every single frame. 
 Due to those limitations, we are compromised to 
 use TSDF meshes from coarse voxels, which have geometric incorrectness including noise. 
 Nevertheless, there is strong demand to perfect geometry captured from SLAM sequences. 
