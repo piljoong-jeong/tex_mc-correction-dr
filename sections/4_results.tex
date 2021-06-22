@@ -1,5 +1,5 @@
 \section{Results}
-We have implemented our method on top of general differentiable renderer[11]. 
+We have implemented our method on top of general differentiable renderer\cite{ravi2020accelerating}. 
 For all tests, we used Intel Xeon E5-2687W CPU machine with 3.0GHz, and GeForce RTX 2080 TI for CUDA-optimized differentiable renderer. 
 We optimized our mesh with Stochastic Gradient Descent method with learning rate = 1.0, and momentum = 0.9. 
 We placed one virtual light source at the camera center for all experiments, although this method is up to a number of lights and its positions.
@@ -8,14 +8,15 @@ We placed one virtual light source at the camera center for all experiments, alt
     \centering
     \includegraphics[width=\textwidth]{figures/4_result_comparison_with_previous_method.png}
     \caption{Comparison of result using previous method and our method. For target silhouette, we generated it from input mesh by render mesh with silhouette renderer, and it is enough to use since silhouette image itself does not hold any depth information other than boundary information of target mesh. \textbf{Previous} result fails to converge to perceptive geometric shape hidden in target images, whereas \textbf{Proposed} result successfully reduces noise. Note that \textbf{Proposed} method only observes $\mathbf{\mathcal{C}}$ in order to infer noise-free geometry, whereas Previous method requires both $\mathbf{\mathcal{C}}$ and $\mathbf{S}$.}
+    \label{fig:comparison_with_previous_method}
 \end{figure*}
 
 \subsection{Comparison with Previous Work}
-We compare our method with standard differentiable rendering approach used in differentiable renderer[1]. 
+We compare our method with standard differentiable rendering approach used in differentiable renderer\cite{liu2019soft}. 
 We slightly modified its workflow in order to evaluate performance under identical conditions (please refer Figure 2. for details). 
 Specifically, we limit amount of target view to 1, as it is impossible to synthetically generate clean target using existing SLAM sequences. 
 For silhouette image, we used silhouette of input TSDF mesh as silhouette itself does not take into account detailed depth information as they represent boundary of mesh \PJ{TODO: to footnote}(Hence, previous methods required silhouette images from different camera extrinsic in order to optimize the shape of input mesh). 
-We follow losses and its weights as suggested in previous method[11], which is defined as: 
+We follow losses and its weights as suggested in previous method\cite{ravi2020accelerating}, which is defined as: 
 \begin{multline*}
     \mathcal{L}_{prev}=w_{sil}\cdot L_{sil}+w_{rgb}\cdot L_{rgb}+w_{edge}\cdot L_{edge}+ \\ 
     w_{normal}\cdot L_{normal}+w_{laplacian}\cdot L_{laplacian}, 
@@ -40,7 +41,7 @@ Nevertheless, the total loss forms a convex function as the actual contribution 
 \begin{figure}
     \includegraphics[width=\columnwidth]{figures/4_result_loss_plot_with_images.png}
     \caption{Loss plot with loss images at specific iterations (here, 0, 150, and 300 is used). Our lightweight loss successfully minimizes vertex noise by observing target noise-free geometric information $G_\mathcal{C}$. Note that $L_{pos}$ never converges to zero, as they act as constraint to vertices not to evolve too far from its original position, thus have non-zero values among all iterations.}
-    \label{fig:six}
+    \label{fig:loss_plot_with_images}
 \end{figure}
 
 \subsection{Limitations \& Future Directions}
@@ -57,7 +58,7 @@ We illustrated this failure case in Figure 7.
 \begin{figure}
     \includegraphics[width=\columnwidth]{figures/4_future_edge_fitting.png}
     \caption{Inset of each gradient. $G_{lw}$ is corrupted since geometric normal deviates around edge.}
-    \label{fig:eight}
+    \label{fig:edge_fitting}
 \end{figure}
 
 
@@ -70,7 +71,7 @@ We illustrated this failure case in Figure 7.
     Star, circle, and arrow indicates light position, vertices, and gradient (evolving direction after current optimization step), respectively. 
     Here, Green vertex is optimized to Green arrow direction so that it occludes another face. 
     (b) Consequently, there exists a self-intersection between neighboring faces (Black line) although the entire mesh noise is reduced, resulting self-occluded artifact.}
-    \label{fig:seven}
+    \label{fig:self_intersection}
 \end{figure*}
 
 \paragraph{Edge Fitting}

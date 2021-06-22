@@ -7,7 +7,7 @@ Given the scenario, we assume that we know intrinsic, extrinsic parameters of ca
 Specifically, we pre-computed input TSDF mesh $\mathcal{M}$ from 
 pair of GT color image $\mathcal{C}$ and depth image $\mathcal{D}$ with known intrinsic $K$, such that $\mathcal{M}=TSDF(K^-1(\mathcal{C}\oplus\mathcal{D}))$.
 Here, $\oplus$  denotes image registration operator. 
-We used popular SLAM framework [8] to generate $\mathcal{M}$ with voxel size as 2cm. 
+We used popular SLAM framework \cite{zhou2018open3d} to generate $\mathcal{M}$ with voxel size as 2cm. 
 Since $\mathcal{D}$ is noisy measurement of real scene geometry, 
 $\mathcal{M}$, and its rendering $C$ have slightly different appearance compare with $\mathcal{C}$. 
 We additionally constraint that there are no strong texture changes 
@@ -102,7 +102,7 @@ Therefore, we note that for all results we used $I_C$ instead of $I\textsubscrip
     \centering
     \includegraphics[width=\textwidth]{figures/3_method_relationship_gradient_lightweight_and_noise_full_tone_changed.png}
     \caption{Relationship between $G\textsubscript{lw}$ and actual noise of vertex $V$. We manually selected three pixels, where each have different magnitude of $G\textsubscript{lw}$. We also illustrated 1D example of the relationship. Gray and Purple lines and arrows indicate each face and its geometric normal. (a) $V$ is considered as noise-free since $G\textsubscript{lw}$ is evaluated as zero, meaning adjacent faces have identical normal value. (b) $G\textsubscript{lw}$ is increased as two faces have inconsistent normal. (c) as $G\textsubscript{lw}$ gets bigger, $V$ is considered as highly-noisy vertex. From these examples, we can say that $G\textsubscript{lw}$ precisely indicates where noisy pixels exist.}
-    \label{fig:three}
+    \label{fig:relationship_gradient_lightweight_and_noise}
 \end{figure*}
 
 \subsection{Optimization using Differentiable Rendering}
@@ -121,5 +121,5 @@ For all results, we used $w_{lw}=0.01$ and $w_{pos}=1.0$. Fig. 4 visualizes opti
 \begin{figure}
     \includegraphics[width=\columnwidth]{figures/3_method_optimization.png}
     \caption{Optimization procedure of our differentiable rendering. From generated target noise-free geometric clue $G_\mathcal{C}$ and input noisy geometric clue $G_{lw}$, we minimize $L_2$ distance between two clues. Note that we additionally penalize aggressive vertex evolve, however it is skipped in the figure.}
-    \label{fig:four}
+    \label{fig:optimization}
 \end{figure}
