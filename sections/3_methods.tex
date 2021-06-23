@@ -1,36 +1,22 @@
 \section{Methods}
 
-\paragraph{Assumptions}
-Our goal is to minimize TSDF mesh noise fused from 
-a single, Lambertian-dominant indoor RGB-D frame. 
-Given the scenario, we assume that we know intrinsic, extrinsic parameters of camera used to capture the frame. 
-Specifically, we pre-computed input TSDF mesh $\mathcal{M}$ from 
-pair of GT color image $\mathcal{C}$ and depth image $\mathcal{D}$ with known intrinsic $K$, such that $\mathcal{M}=TSDF(K^-1(\mathcal{C}\oplus\mathcal{D}))$.
-Here, $\oplus$  denotes image registration operator. 
-We used popular SLAM framework \cite{zhou2018open3d} to generate $\mathcal{M}$ with voxel size as 2cm. 
-Since $\mathcal{D}$ is noisy measurement of real scene geometry, 
-$\mathcal{M}$, and its rendering $C$ have slightly different appearance compare with $\mathcal{C}$. 
-We additionally constraint that there are no strong texture changes 
-under geometrically close, flat surfaces (e.g., chessboard pattern on flat wall). 
-This assumption is used to ensure that strong radiance change is 
-only made from interaction between light and hit-point geometry within $C$. 
-We will elaborate this assumption later.
-
 We propose an optimization procedure that incrementally minimizes mesh vertex noises using differentiable rendering. 
-Suppose we have vertices $V=\{V_i\in\mathbb{R}^3\}=\{V_0...V_n\}$ within input mesh, we define deformed vertices $V_d$, which has same shape as $V$ initialized with zero values i.e., $V_d=\{\mathbf{0}_0,...,\mathbf{0}_n\}$. 
-For every iteration, $V_d$ is optimized so that resulting optimized vertices approximates noise-free geometry similar with $\mathcal{C}$.  
-The main problem is how find common geometric representations across different image types (here, rendered $\mathcal{M}$ fused from $\mathcal{D}$ and $\mathcal{C}$) 
-to figure out which region is to be optimized (i.e., noisy).
+Suppose we have vertices $V=\{V_i\in\mathbb{R}^3\}=\{V_0...V_n\}$ within input mesh $\mathcal{M}$ which is fused from input color $\mathcal{C}$ and depth $\mathcal{D}$ with intrinsic $K$ such that $\mathcal{M}=K^{-1}\left(\mathcal{C}\oplus \mathcal{D}\right)$. 
+Here, $\oplus$ denotes image registration operator.
+We pre-computed $\mathcal{M}$ from popular off-line SLAM framework \cite{zhou2018open3d} with voxel size 2cm.
+We define deformed vertices $V_d$, which has same shape as $V$ initialized with zero values i.e., $V_d=\{\mathbf{0}_0,...,\mathbf{0}_n\}$. 
+For every iteration, $V_d$ is optimized so that resulting vertices $V_o=V+V_d$ approximate noise-free geometry which looks perceptually similar with $\mathcal{C}$. 
+\PJ{Emphasize minimizing difference between GT color and rendered color.}
+The main problem is how to find common geometric representations between $\mathcal{M}$ and $\mathcal{C}$ to figure out which region is to be optimized (i.e., noisy).
+
+\paragraph{Assumptions}
+Our goal is to minimize vertex noise of TSDF mesh $\mathcal{M}$ fused from a single pair of indoor RGB-D images $\mathcal{C}\oplus \mathcal{D}$. Given this scenario, we assume that we known camera intrinsic $K$ and extrinsic $T=I\in\mathbb{R}^{4*4}$. 
+We will also consider the captured real scene is Lambertian, as all SLAM datasets are generated under Lambertian-dominant assumption to guarantee accurate camera pose estimate, unless additional consideration of non-Lambertian scene is introduced. \PJ{TODO: refer [Whelan, 2018]}
+We additionally constrain that there are no strong texture changes under geometrically close, flat surfaces. 
 
 \PJ{Too verbose! TODO: add proof}
-Our key observation is strong radiance change within $\mathcal{C}$, 
-is only occurred from strong geometric displacements around a corresponding pixel. 
+Our key observation is strong radiance change within color images $\mathcal{C}$ and $C$, is only occurred from strong geometric displacements around a corresponding pixel. 
 This is possible since we made two assumptions: Lambertian-dominant scene, and no strong texture changes under flat surface. 
-We are able to guarantee the first assumption since SLAM dataset is generated under the assumption.
-It is still open challenge as it is necessary condition for correspondences used to estimating relative camera pose, 
-as well as current depth sensing hardware fails to measure depth values lie on non-Lambertian surfaces. 
-By applying second assumption, we are able to intuitively know that 
-there is no sudden radiance change around point on noise-free surface. 
 Consider $\mathcal{C}$ is generated from perfect renderer 
 which are capable of tracing full light transport, under perfect geometries. 
 Although we cannot know which lighting conditions are used to render $\mathcal{C}$, 

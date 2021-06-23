@@ -13,7 +13,7 @@ We placed one virtual light source at the camera center for all experiments, alt
 
 \subsection{Comparison with Previous Work}
 We compare our method with standard differentiable rendering approach used in differentiable renderer\cite{liu2019soft}. 
-We slightly modified its workflow in order to evaluate performance under identical conditions (please refer Figure 2. for details). 
+We slightly modified its workflow in order to evaluate performance under identical conditions (please refer \ref{fig:difference_simple_mesh_and_tsdf_mesh} for details). 
 Specifically, we limit amount of target view to 1, as it is impossible to synthetically generate clean target using existing SLAM sequences. 
 For silhouette image, we used silhouette of input TSDF mesh as silhouette itself does not take into account detailed depth information as they represent boundary of mesh \PJ{TODO: to footnote}(Hence, previous methods required silhouette images from different camera extrinsic in order to optimize the shape of input mesh). 
 We follow losses and its weights as suggested in previous method\cite{ravi2020accelerating}, which is defined as: 
