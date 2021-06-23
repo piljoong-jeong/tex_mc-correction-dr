@@ -101,7 +101,8 @@ Therefore, we note that for all results we used $I_C$ instead of $I\textsubscrip
 \begin{figure*}
     \centering
     \includegraphics[width=\textwidth]{figures/3_method_relationship_gradient_lightweight_and_noise_full_tone_changed.png}
-    \caption{Relationship between $G\textsubscript{lw}$ and actual noise of vertex $V$. We manually selected three pixels, where each have different magnitude of $G\textsubscript{lw}$. We also illustrated 1D example of the relationship. Gray and Purple lines and arrows indicate each face and its geometric normal. (a) $V$ is considered as noise-free since $G\textsubscript{lw}$ is evaluated as zero, meaning adjacent faces have identical normal value. (b) $G\textsubscript{lw}$ is increased as two faces have inconsistent normal. (c) as $G\textsubscript{lw}$ gets bigger, $V$ is considered as highly-noisy vertex. From these examples, we can say that $G\textsubscript{lw}$ precisely indicates where noisy pixels exist.}
+    \caption{Relationship between $G\textsubscript{lw}$ and actual noise of vertex $\textcolor{Orange}{V}$. We manually selected three pixels, where each have different magnitude of $G\textsubscript{lw}$. We also illustrated 1D example of the relationship. \textbf{\textcolor
+    {Gray}{Gray}} and \textbf{\textcolor{Purple}{Purple}} lines and arrows indicate each face and its geometric normal. \textbf{\textcolor{LimeGreen}{(a)}} $\textcolor{Orange}{V}$ is considered as noise-free since $G\textsubscript{lw}$ is evaluated as zero, meaning adjacent faces have identical normal value. \textbf{\textcolor{Dandelion}{(b)}} $G\textsubscript{lw}$ is increased as two faces have inconsistent normal. \textbf{\textcolor{Red}{(c)}} as $G\textsubscript{lw}$ gets bigger, $\textcolor{Orange}{V}$ is considered as highly-noisy vertex. From these examples, we can say that $G\textsubscript{lw}$ precisely indicates where noisy pixels exist.}
     \label{fig:relationship_gradient_lightweight_and_noise}
 \end{figure*}
 

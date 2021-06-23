@@ -65,12 +65,12 @@ We illustrated this failure case in Figure 7.
 \begin{figure*}
     \includegraphics[width=\textwidth]{figures/4_future_work_self_intersection.png}
     \caption{Comparison of input mesh and optimized mesh. We zoomed up each geometry corresponds to image inset. 
-    Black artifacts are observed in zoomed view in optimized mesh. We found that those are self-intersection between neighboring faces, since our positional constraint $L_{pos}$ does not consider distances between neighboring vertices. 
+    \textbf{Black artifacts} are observed in zoomed view in optimized mesh. We found that those are self-intersection between neighboring faces, since our positional constraint $L_{pos}$ does not consider distances between neighboring vertices. 
     This phenomenon is illustrated at the rightmost images of each zoomed view. 
     (a) For each iteration, vertices are optimized while only considering flatness of surfaces, not for topological correctness of geometry. 
     Star, circle, and arrow indicates light position, vertices, and gradient (evolving direction after current optimization step), respectively. 
-    Here, Green vertex is optimized to Green arrow direction so that it occludes another face. 
-    (b) Consequently, there exists a self-intersection between neighboring faces (Black line) although the entire mesh noise is reduced, resulting self-occluded artifact.}
+    Here, \textbf{\textcolor{ForestGreen}{Green vertex}} is optimized to \textbf{\textcolor{ForestGreen}{Green arrow}} direction so that it occludes another face. 
+    (b) Consequently, there exists a self-intersection between neighboring faces (\textbf{Black line}) although the entire mesh noise is reduced, resulting self-occluded artifact.}
     \label{fig:self_intersection}
 \end{figure*}
 
