@@ -1,5 +1,7 @@
 \section{Previous Works}
 
+We clustered the related work into three categories. Note that any of those, are orthogonal to our work; Our proposed method can take output from any of those methods as input, and able to generate more plausible result.
+
 \paragraph{TSDF Mesh Noise Reduction in SLAM}
 Starting from pioneering work \cite{curless1996volumetric}, 
 estimating true depth from noisy measurements 
@@ -20,18 +22,14 @@ Our method, in contrast, is able to infer geometric clue in color image,
 thus able to de-noise input mesh without multiple frames.
 
 \paragraph{Differentiable Rendering}
-Differentiable rendering is the technique that 
-optimizing input parameters by observing a set of target images 
-via iteratively render a scene with current state of input parameters (i.e., forward pass), 
+One may consider differentiable rendering technique to remedy noisy mesh, as during SLAM process we naturally capture a set of target color images while actual mesh is contaminated from a set of noisy measurements.
+Differentiable rendering optimize input parameters by observing a set of target images via iteratively render a scene with current state of input parameters (i.e., forward pass), 
 as well as propagate gradients along with computation graph (i.e., backward pass) built at forward pass. 
-Due to the fact that it does not require any prior knowledge (e.g., pre-trained model trained from external dataset) 
-other than target images, this seems an off-the-shelf optimizer for SLAM 
-since we naturally capture target image during scanning process, 
-whereas fused mesh is contaminated with noise due to its nature limitations. 
-However, there are ambiguities that have to be considered 
-in order to adapt differentiable rendering to optimize SLAM problems. 
-\ref{fig:difference_simple_mesh_and_tsdf_mesh} describes the different setup between simple mesh optimization 
-and indoor TSDF mesh optimization. 
+Due to the fact that it does not require any prior knowledge (e.g., pre-trained model trained from external dataset) other than target images, this seems an off-the-shelf optimizer for SLAM. 
+
+However, there are ambiguities that have to be considered in order to adapt differentiable rendering to optimize SLAM problems. 
+Figure \ref{fig:difference_simple_mesh_and_tsdf_mesh} describes the different setup between simple mesh optimization and indoor TSDF mesh optimization. 
+\PJ{Elaborate how loss is determined in order to optimize mesh.}
 Our method bypasses those ambiguities via inferring geometric clue 
 without necessity of silhouette information, as well as multiple target observations.
 \begin{figure}
@@ -39,3 +37,6 @@ without necessity of silhouette information, as well as multiple target observat
     \caption{Different setup between optimizing simple mesh and TSDF mesh from SLAM. Previous works aimed to optimize input geometry to set of target images captured with different camera view either synthetically\cite{ravi2020accelerating}\cite{jatavallabhula2019kaolin}\cite{laine2020modular}\cite{nimier2019mitsuba} or by taking calibrated real photographs\cite{nimier2019mitsuba}. However, in the case of TSDF mesh from SLAM it is ambiguous since (1) input is not separated with its backgrounds, hence silhouette image is hard to generate (2) we cannot generate synthetic target views (3) it is hard to sample real images from SLAM sequences which captures a region that input mesh represents, since the labeled camera pose paired with target image is estimated value. It is well-known that camera poses from SLAM is inaccurate. (a) It is straightforward to generate synthetic target images if the target image can be rendered. (b) Unlike (a), it is much hard to augment target images in order to optimize indoor TSDF mesh.}
     \label{fig:difference_simple_mesh_and_tsdf_mesh}
 \end{figure}
+
+\paragraph{Geometry from Color Image}
+
