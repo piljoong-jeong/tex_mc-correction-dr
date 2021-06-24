@@ -22,15 +22,23 @@ Let us consider $\mathcal{C}$ as a result from perfect renderer which is capable
 Based on Light Transport Equation(LTE) representation with respect to path integral form \cite{veach1998robust}, we represent $\mathcal{C}$ as a set of solution of LTE for each pixel:
 
 \begin{align}
-    \mathcal{C} & = \bigcup_i^W \bigcup_j^H L_{i,j}\left(K^{-1}\cdot x\rightarrow P_0\right) \nonumber \\
-    & = \bigcup_i^W \bigcup_j^H L_{i,j}\left(P_1'\rightarrow P_0\right),
+    \mathcal{C} & = \bigcup_i^W \bigcup_j^H L_{i,j}\left(K^{-1}\cdot x\rightarrow p_0\right) \nonumber \\
+    & = \bigcup_i^W \bigcup_j^H L_{i,j}\left(p_1'\rightarrow p_0\right),
 \end{align}
-where $L_{i,j}$ is total radiance at a pixel, and $P_1'=K^{-1}\cdot x$ is hitpoint of $L_{i,j}$.
+where $L_{i,j}$ is total radiance at a pixel, and $p_1'=K^{-1}\cdot x$ is hitpoint of $L_{i,j}$.
 
 To intuitively exploit relationship between $\mathcal{C}$ and noise-free hitpoint $x_{i,j}$, we expand radiance sum over path:
-% \begin{equation}
-    
-% \end{equation}
+\begin{align}
+    L_{i,j}\left(p_1'\rightarrow p_0\right)& = [\mathit{P\left(\bar{\mathrm{p}}_1\right)}+\mathit{P\left(\bar{\mathrm{p}}_2\right)}]+[\sum_{n=3}^\infty \mathit{P}\left(\bar{\mathrm{p}}_n\right)], 
+    \label{LTE_path_integral}
+\end{align}
+
+where $\bar{\mathrm{p}}_n=\mathrm{p}_0\mathrm{p}_1...\mathrm{p}_n$ is path segment with $n+1$ vertices. We examine emitted radiance i.e., Albedo and direct lighting term in (Eqn. \ref{LTE_path_integral}):
+
+\begin{align}
+    \mathit{P\left(\bar{\mathrm{p}}_1\right)}+\mathit{P\left(\bar{\mathrm{p}}_2\right)}=\int_A & f\left(p_2\rightarrow p_1\rightarrow p_0\right)\cdot L_{e (i,j)}\left(p_2\rightarrow p_1\right)\cdot \nonumber \\
+    & V\left(p_1 \leftrightarrow p_2\right) \cdot dA\left(p_2\right)
+\end{align}
 
 
 % Our key observation is strong radiance change within color images $\mathcal{C}$ and $C$, is only occurred from strong geometric displacements around a corresponding pixel. 
