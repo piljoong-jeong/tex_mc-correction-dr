@@ -69,7 +69,7 @@ Since we assumed Lambertian surface and emitted radiance term is up to geometry,
 
 We do not consider emitted radiance i.e., albedo term $\mathit{P}\left(\bar{\mathrm{p}}_1\right)$ since this represents pure physical quantity of a geometry have, thus itself is consistent up to any geometric displacement (e.g., additive noise on vertices).
 We additionally treat indirect lighting term $\sum_{n=3}^\infty \mathit{P}(\bar{\mathrm{p}}_n)$ as it is; we will consider that indirect lighting cannot make a pixel value discontinuous with neighbors where is continuous when only direct lighting is applied. 
-This is because indirect lighting term uses identical rendering equation with direct lighting term except to hitpoints, and its throughput is far smaller than direct lighting term.
+This seems feasible because (1) indirect lighting term uses identical rendering equation with direct lighting term except to hitpoints (2) its throughput is far smaller than direct lighting term.
 
 We now examine direct lighting term in rendering $C$, where virtual light (which has far different setup with Ground Truth lighting condition) and noisy geometry $\mathcal{M}$ is used.
 
@@ -87,7 +87,7 @@ We now examine direct lighting term in rendering $C$, where virtual light (which
 
 As $\mathcal{M}$ is composed with noisy vertices $V$ and virtual light is used, all \textbf{hitpoint-related} terms are highly likely to have different value against those from $\mathcal{C}$, thus have different value though same pixel position is used.
 
-We will define loss as the pixel value difference between $\mathcal{C}$ and $C$:
+In the following secction, we will define loss as the pixel value difference between $\mathcal{C}$ and $C$:
 
 % \begin{fleqn}[\parindent]
 % \begin{equation}
