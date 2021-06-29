@@ -9,37 +9,97 @@ For every iteration, $V_d$ is optimized so that resulting vertices $V_o=V+V_d$ a
 \PJ{Emphasize minimizing difference between GT color and rendered color.}
 The main problem is how to find common geometric representations between $\mathcal{C}$ and $C$ to figure out which region is to be optimized (i.e., noisy).
 
-\paragraph{Assumptions}
-Our goal is to minimize vertex noise of TSDF mesh $\mathcal{M}$ fused from a single pair of indoor RGB-D images $\mathcal{C}\oplus \mathcal{D}$. Given this scenario, we assume that we known camera intrinsic $K$ and extrinsic $T=I\in\mathbb{R}^{4*4}$. 
-We will also consider the captured real scene is Lambertian, as all SLAM datasets are generated under Lambertian-dominant assumption to guarantee accurate camera pose estimate, unless additional consideration of non-Lambertian scene is introduced. \PJ{TODO: refer [Whelan, 2018]}
-We additionally constrain that there are no strong texture changes under geometrically close, flat surfaces. 
+% \paragraph{Assumptions}
+% Our goal is to minimize vertex noise of TSDF mesh $\mathcal{M}$ fused from a single pair of indoor RGB-D images $\mathcal{C}\oplus \mathcal{D}$. Given this scenario, we assume that we known camera intrinsic $K$ and extrinsic $T=I\in\mathbb{R}^{4*4}$. 
+% We will also consider the captured real scene is Lambertian, as all SLAM datasets are generated under Lambertian-dominant assumption to guarantee accurate camera pose estimate, unless additional consideration of non-Lambertian scene is introduced. \PJ{TODO: refer [Whelan, 2018]}
+% We additionally constrain that there are no strong texture changes under geometrically close, flat surfaces. 
+
+\subsection{Exploting assumptions underlying existing SLAM datasets}
+We found two common aspects within $\mathcal{C}$ taken from most of SLAM dataset, which acts important role to consider $\mathcal{C}$ as geometric clue.
+% : (1) given scene is Lambertian-dominant (2) no strong texture changes within a plane.
+
+\noindent \textbf{Lambertian-dominant}. 
+This naturally satiesfies since this is an assumption for vast majority of SLAM dataset, unless it is used for vaildating SLAM algorithm under non-Lambertian environment e.g., \PJ{cite [Whelan et al. 2018]}. 
+In order to track accurate camera pose during SLAM, finding reliable feature correspondences are necessary.
+Generally, a point shown in two consecutive images $\mathcal{C}_0$, $\mathcal{C}_1$ is chosen, which satisfies photometric consistency i.e., $E_{photo}=\arg\min_x \mathcal{C}_0\left(x+\overrightarrow{\mathrm{u}}\right)-\mathcal{C}_1\left(x\right)$. \PJ{TODO: cite Szeliski's book?}
+This is because it has been empirically considered as 'static anchor' on a given scene; a point on a surface never deforms during capturing stage, and its value is direction-invariant so that the point has consistent pixel value wherever an image is taken from. 
+
+Interpreting photometric consistency in computer graphics field is trivial; this indicates that a point is lie on a Lambertian surface, such that a bi-directional reflectance $f(x, w_i, w_o)=c$, where $c\le 1$ is a constant.
+
+
+\noindent \textbf{No strong radiance changes within a plane}. 
+We found that there seldom have strong radiance changes within a plane among indoor SLAM datasets. 
+Here, a plane can be a structural information of given scene (e.g., wall, floor, ceiling), or upper part of an object (e.g., desk, box).
+% Although there exists a case that a plane have strong radiance changes (e.g., chessboard pattern on floor), we decided to ignore such cases
+
 
 \subsection{Interpreting Perceptually Noise-free Geometry from Color Image}
 \PJ{Too verbose! TODO: add proof}
 In this section, we formally describe our intuition that enables input color image treated as noise-free geometric clue.
 
-Let us consider $\mathcal{C}$ as a result from perfect renderer which is capable of tracing full light transport without any noise and outlier, given unknown lighting conditions and noise-free geometry. 
+Let us consider $\mathcal{C}$ as a result from perfect renderer which is capable of tracing full light transport without any noise or outlier, given unknown lighting conditions and noise-free geometry. 
 Based on Light Transport Equation(LTE) representation with respect to path integral form \cite{veach1998robust}, we represent $\mathcal{C}$ as a set of solution of LTE for each pixel:
 
 \begin{align}
     \mathcal{C} & = \bigcup_i^W \bigcup_j^H L_{i,j}\left(K^{-1}\cdot x\rightarrow p_0\right) \nonumber \\
-    & = \bigcup_i^W \bigcup_j^H L_{i,j}\left(p_1'\rightarrow p_0\right),
+    & = \bigcup_i^W \bigcup_j^H L_{i,j}\left(p_1\rightarrow p_0\right),
 \end{align}
-where $L_{i,j}$ is total radiance at a pixel, and $p_1'=K^{-1}\cdot x$ is hitpoint of $L_{i,j}$.
+where $L_{i,j}$ is total radiance at a pixel, and $p_1=K^{-1}\cdot x$ is a hitpoint corresponds to $L_{i,j}$.
 
-To intuitively exploit relationship between $\mathcal{C}$ and noise-free hitpoint $x_{i,j}$, we expand radiance sum over path:
+To intuitively exploit relationship between $\mathcal{C}$ and noise-free hitpoint $x_{i,j}$ corresponds to a pixel, we expand radiance sum over path segments $\bar{\mathrm{p}}_n=\mathrm{p}_0\mathrm{p}_1...\mathrm{p}_n$ with $n+1$ vertices:
 \begin{align}
-    L_{i,j}\left(p_1'\rightarrow p_0\right)& = [\mathit{P\left(\bar{\mathrm{p}}_1\right)}+\mathit{P\left(\bar{\mathrm{p}}_2\right)}]+[\sum_{n=3}^\infty \mathit{P}\left(\bar{\mathrm{p}}_n\right)], 
+    L_{i,j}\left(p_1\rightarrow p_0\right)& = \mathit{P}\left(\bar{\mathrm{p}}_1\right)+\mathit{P}\left(\bar{\mathrm{p}}_2\right)+\sum_{n=3}^\infty \mathit{P}\left(\bar{\mathrm{p}}_n\right), 
     \label{LTE_path_integral}
 \end{align}
 
-where $\bar{\mathrm{p}}_n=\mathrm{p}_0\mathrm{p}_1...\mathrm{p}_n$ is path segment with $n+1$ vertices. We examine emitted radiance i.e., Albedo and direct lighting term in (Eqn. \ref{LTE_path_integral}):
+% We examine direct lighting and emitted radiance i.e., Albedo term in (Eqn. \ref{LTE_path_integral}) first:
+
+Let us consider direct lighting term in (Eqn. \ref{LTE_path_integral}) first:
 
 \begin{align}
-    \mathit{P\left(\bar{\mathrm{p}}_1\right)}+\mathit{P\left(\bar{\mathrm{p}}_2\right)}=\int_A & f\left(p_2\rightarrow p_1\rightarrow p_0\right)\cdot L_{e (i,j)}\left(p_2\rightarrow p_1\right)\cdot \nonumber \\
-    & V\left(p_1 \leftrightarrow p_2\right) \cdot dA\left(p_2\right)
+    \mathit{P}\left(\bar{\mathrm{p}}_2\right) & = \int_A && f\left(\mathrm{p}_2\rightarrow \mathrm{p}_1 \rightarrow \mathrm{p}_0\right)\cdot L_{e(i,j)}\left(\mathrm{p}_2\rightarrow \mathrm{p}_1\right) \cdot G\left(\mathrm{p}_1 \leftrightarrow \mathrm{p}_2\right) \nonumber \\
+    & = \int_A \Bigg[ && f\left(\mathrm{p}_2\rightarrow \mathrm{p}_1 \rightarrow \mathrm{p}_0\right)\cdot L_{e(i,j)}(\mathrm{p}_2\rightarrow \mathrm{p}_1) \nonumber \\ 
+    & && \cdot V(\mathrm{p}_1 \leftrightarrow \mathrm{p}_2) \cdot \frac{\left|\cos(\theta_1)\right|\left|\cos(\theta_2)\right|}{\left|\left|\mathrm{p}_1-\mathrm{p}_2\right|\right|^2}\Bigg]
+    \label{LTE_path_integral_direct_lighting}
 \end{align}
 
+Note that we omitted path differential $dA(\mathrm{p}_2)$ for brevity.
+
+Since we assumed Lambertian surface and emitted radiance term is up to geometry, the term that affects to final radiance value in (Eqn. \ref{LTE_path_integral_direct_lighting}) is \textbf{hitpoint-related} terms: visilbility, incident angles, and distance between hitpoints.
+
+We do not consider emitted radiance i.e., albedo term $\mathit{P}\left(\bar{\mathrm{p}}_1\right)$ since this represents pure physical quantity of a geometry have, thus itself is consistent up to any geometric displacement (e.g., additive noise on vertices).
+We additionally treat indirect lighting term $\sum_{n=3}^\infty \mathit{P}(\bar{\mathrm{p}}_n)$ as it is; we will consider that indirect lighting cannot make a pixel value discontinuous with neighbors where is continuous when only direct lighting is applied. 
+This is because indirect lighting term uses identical rendering equation with direct lighting term except to hitpoints, and its throughput is far smaller than direct lighting term.
+
+We now examine direct lighting term in rendering $C$, where virtual light (which has far different setup with Ground Truth lighting condition) and noisy geometry $\mathcal{M}$ is used.
+
+% \begin{align}
+%     C & = \bigcup_i^W \bigcup_j^H L_{i,j}\left(K^{-1}\cdot x'\rightarrow p_0\right) \nonumber \\
+%     & = \bigcup_i^W \bigcup_j^H L_{i,j}\left(p'_1\rightarrow p_0\right),
+% \end{align}
+
+% We consider its direct lighting only:
+
+\begin{align}
+    \mathit{P}\left(\bar{\mathrm{p}}'_2\right) = c\int_A L_{e(i,j)}(\mathrm{p}'_2\rightarrow \mathrm{p}'_1) \cdot V(\mathrm{p}'_1 \leftrightarrow \mathrm{p}'_2) \cdot \frac{\left|\cos(\theta_1)'\right|\left|\cos(\theta_2)'\right|}{\left|\left|\mathrm{p}'_1-\mathrm{p}'_2\right|\right|^2} \nonumber
+    \label{LTE_path_integral_direct_lighting_SLAM}
+\end{align}
+
+As $\mathcal{M}$ is composed with noisy vertices $V$ and virtual light is used, all \textbf{hitpoint-related} terms are highly likely to have different value against those from $\mathcal{C}$, thus have different value though same pixel position is used.
+
+We will define loss as the pixel value difference between $\mathcal{C}$ and $C$:
+
+% \begin{fleqn}[\parindent]
+% \begin{equation}
+% \begin{split}
+%     \mathcal{L} & =\sum_{i,j} L_{e(i,j)}(p_1 \rightarrow p_0)-L_{e(i,j)}(p'_1 \rightarrow p_0) \\
+%     & \sim V \cdot \cos \cdot||p||^2
+% \end{split}
+% \end{equation}
+% \end{fleqn}
+\begin{equation}
+    \mathcal{L}=\sum_{i,j} \Big( L_{e(i,j)}(p_1 \rightarrow p_0)-L_{e(i,j)}(p'_1 \rightarrow p_0) \Big) \sim V \cdot \cos \cdot||p||^2
+\end{equation}
 
 % Our key observation is strong radiance change within color images $\mathcal{C}$ and $C$, is only occurred from strong geometric displacements around a corresponding pixel. 
 % This is possible since we made two assumptions: Lambertian-dominant scene, and no strong texture changes under flat surface. 
