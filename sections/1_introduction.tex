@@ -19,7 +19,8 @@ However, it is unclear that how to interpret (perceptually encoded) geometric cl
 Moreover, there is some limitations hinder directly applying previous differentiable rendering techniques into SLAM dataset. 
 We explained such difficulties in \ref{fig:difference_simple_mesh_and_tsdf_mesh}.
 
-Our main contribution is bridging the gap between perceptional noise-free geometric features from $\mathcal{C}$ and noisy geometric feature in $\mathcal{M}$. 
+Our main contribution is bridging the gap between perceptional noise-free geometric features from input color image and noisy geometric feature in input mesh. 
+\PJ{TODO: move this into method; this is not our main contribution, rather it is close to implementation detail.}
 To exploit this, we borrow a novel concept of image denoising using flashlight. Images taken with flashlight can hold additional features which are hard to detect from general geometric feature (e.g., depth, normal etc). 
 For example, in \cite{eisemann2004flash} \cite{petschnigg2004digital} flashy photography is used to enhance images taken from scene which has insufficient lighting condition. 
 \cite{moon2013robust} is pioneering work that adopt image enhancement using flashlight on photorealistic rendering domain, by casting virtual flashlights to capture a scene’s reflective / refractive features, which are not stored in traditional G-buffers. 
