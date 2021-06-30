@@ -2,6 +2,7 @@
 We have implemented our method on top of general differentiable renderer\cite{ravi2020accelerating}. 
 For all tests, we used Intel Xeon E5-2687W CPU machine with 3.0GHz, and GeForce RTX 2080 TI for CUDA-optimized differentiable renderer. 
 We optimized our mesh with Stochastic Gradient Descent method with learning rate = 1.0, and momentum = 0.9. 
+For $\mathcal{M}$, we pre-computed from popular off-line SLAM framework \cite{zhou2018open3d} with voxel size 2cm.
 We placed one virtual light source at the camera center for all experiments, although this method is up to a number of lights and its positions.
 
 \begin{figure*}
@@ -46,7 +47,6 @@ Nevertheless, the total loss forms a convex function as the actual contribution 
 
 \subsection{Limitations \& Future Directions}
 We summarize future directions of our method, including failure case and promising extension of proposed method.
-
 \paragraph{Adding Robust Positional Constraint Loss}
 Although our method can drastically reduce mesh noise, we found that optimized mesh is not maintaining topologically correct structure. 
 Specifically, we observed self-intersections between neighboring faces. 
