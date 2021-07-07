@@ -8,12 +8,6 @@ We placed one virtual light source at the camera center for all experiments, alt
 
 \subsection{Validation of Proposed Method}
 
-\paragraph{Validation of loss}
-In (Fig. \ref{fig:loss_plot_with_images}), we plotted our loss graph to ensure that our loss function forms a convex function. 
-Our proposed lightweight loss is monotonically decreased as the optimization continues. 
-Note that our positional loss is not minimized, as we want positional loss to act similar with regularization term, which prevents evolving vertices getting not to far from its original position. 
-Nevertheless, the total loss forms a convex function as the actual contribution of positional loss is small enough than lightweight loss. 
-We showed the effect of positional loss in (Fig. \ref{fig:ablation_study_positional_loss}).
 
 \begin{figure}
     \includegraphics[width=\columnwidth]{figures/4_result_loss_plot_with_images.png}
@@ -27,22 +21,41 @@ We showed the effect of positional loss in (Fig. \ref{fig:ablation_study_positio
     \label{fig:ablation_study_positional_loss}
 \end{figure}
 
-\paragraph{Validation with various scenes}
-We validated performance of our proposed method, by evaluating minimum eigenvalue of the region where we are able to perceive as 'flat', given $\mathcal{C}$.
+\paragraph{Validation of loss}
+In (Fig. \ref{fig:loss_plot_with_images}), we plotted our loss graph to ensure that our loss function forms a convex function. 
+Our proposed lightweight loss is monotonically decreased as the optimization continues. 
+Note that our positional loss is not minimized, as we want positional loss to act similar with regularization term, which prevents evolving vertices getting not to far from its original position. 
+Nevertheless, the total loss forms a convex function as the actual contribution of positional loss is small enough than lightweight loss. 
+We showed the effect of positional loss in (Fig. \ref{fig:ablation_study_positional_loss}).
 
-\begin{figure}
-    \includegraphics[width=\columnwidth]{figures/4_result_plane_fitting.png}
-    \caption{Plane fitting validation of our result. Given scenes, we selected \textcolor{Orange}{\textbf{Orange}} region where is considered as "perceptually flat". We compared minimum eigenvalue between inset of input mesh (Middle) and optimized mesh (Right), and plotted heatmap of each result. Our method successfully minimize minimum eigenvalue within plane.}
-\end{figure}
+\paragraph{Validation with various scenes}
+
 
 \begin{figure*}
-    \centering
-    \includegraphics[width=\textwidth]{figures/4_result_comparison_with_previous_method.png}
-    \caption{Comparison of result using previous method and our method. For target silhouette, we generated it from input mesh by render mesh with silhouette renderer, and it is enough to use since silhouette image itself does not hold any depth information other than boundary information of target mesh. \textbf{Previous} result fails to converge to perceptive geometric shape hidden in target images, whereas \textbf{Proposed} result successfully reduces noise. Note that \textbf{Proposed} method only observes $\mathbf{\mathcal{C}}$ in order to infer noise-free geometry, whereas Previous method requires both $\mathbf{\mathcal{C}}$ and $\mathbf{S}$.}
-    \label{fig:comparison_with_previous_method}
+    \includegraphics[width=\textwidth]{figures/4_result_plane_fitting_all.png}
+    \caption{Plane fitting validation of our result. Given scenes (Left), we selected \textcolor{Orange}{\textbf{Orange}}, \textcolor{NavyBlue}{\textbf{Blue}}, and \textcolor{Dandelion}{\textbf{Yellow}} regions where are considered as "perceptually flat". We compared minimum eigenvalue of hitpoint $\lambda_3$ between insets of input mesh (Middle) and optimized mesh (Right), and visualized heatmap of each result. Heatmap indicates \textcolor{NavyBlue}{blue} if a region is totally flat i.e., $\lambda_3 \approx 0$, and colored \textcolor{Red}{red} vice versa. For each inset, we additionally report maximum value of $\lambda_3$, and marked as boldface where has lesser $\lambda_3$. }
+    \label{fig:result_plane_fitting}
 \end{figure*}
 
+We validated performance of our proposed method, by evaluating minimum eigenvalue $\lambda_3$ of the region where we are able to perceive as 'flat', given $\mathcal{C}$.
+Particularlly, for each selected inset, we cropped input and optimized mesh, and sampled sufficient amount (e.g., 1M) of point cloud. 
+$\lambda_3$ is computed for each point cloud, by running Principle Component Analysis to spatial covariance matrix $\Sigma_i=\frac{1}{N}\sum_{\mathrm{n}\in\mathcal{N}}(\mathrm{p_n}-\bar{\mathrm{p}})(\mathrm{p_n}-\bar{\mathrm{p}})^T$, which generates eigenvalues $\lambda_1 \ge \lambda_2 \ge \lambda_3 \ge 0$. 
+As $\lambda_3$ goes close to zero, $\Sigma_i \in \mathbb{R}^3$ represents distribution of points projected in a plane.
+Intuitively, we can consider optimization is succeed if $\lambda_3$ is decreased compare to input mesh for each points.
+To validate this, we plotted heatmap of $\lambda_3$ for each points in (Fig. \ref{fig:result_plane_fitting}).
+Additionally, we noted maximum value of $\lambda_3$ for each insets.
+For all results, our proposed method successfully reduces maximum $\lambda_3$ compare to input.
+
 \subsection{Comparison with Previous Work}
+
+\begin{figure}
+    \includegraphics[width=\columnwidth]{figures/4_result_comparison_with_previous_method_simple.png}
+    \caption{Equal-iteration comparison of result using previous method\cite{ravi2020accelerating} and our method. 
+    % For target silhouette, we generated it from input mesh by render mesh with silhouette renderer, and it is enough to use since silhouette image itself does not hold any depth information other than boundary information of target mesh. \textbf{Previous} result fails to converge to perceptive geometric shape hidden in target images, whereas \textbf{Proposed} result successfully reduces noise. Note that \textbf{Proposed} method only observes $\mathbf{\mathcal{C}}$ in order to infer noise-free geometry, whereas Previous method requires both $\mathbf{\mathcal{C}}$ and $\mathbf{S}$.
+    }
+    \label{fig:comparison_with_previous_method}
+\end{figure}
+
 We compare our method with standard differentiable rendering approach used in differentiable renderer\cite{liu2019soft}. 
 We slightly modified its workflow in order to evaluate performance under identical conditions (please refer \ref{fig:difference_simple_mesh_and_tsdf_mesh} for details). 
 Specifically, we limit amount of target view to 1, as it is impossible to synthetically generate clean target using existing SLAM sequences. 
@@ -57,32 +70,27 @@ $L_{edge}$, $L_{normal}$, and $L_{laplacian}$ stands for mesh edge length consis
 Note that mesh losses $L_{edge}$, $L_{normal}$, $L_{laplacian}$ is developed from traditional geometry processing field, thus they do not reflect geometric features that are shown in target images. 
 For brevity, we skip detailed equations for each loss. 
 We used $w_{sil}=1.0$, $w_{rgb}=1.0$, $w_{edge}=1.0$, $w_{normal}=0.01$, $w_{laplacian}=1.0$ as authors suggested.
-Fig. 5 shows optimized mesh with loss from previous work. 
-Resulting mesh preserves its silhouette information, as they provided silhouette loss to prevent vertices to evolve out of its silhouettes. 
-However, vertices within silhouette images are evolved without any shape constraints supervised by target images. 
-Those vertices are guided to satisfy input mesh’s internal properties, as mesh losses does not consider geometric clues in target images. 
-This results in optimized mesh failed to optimize, while only preserving boundary.
+(Fig. \ref{fig:comparison_with_previous_method}) shows optimized mesh with loss from previous work. 
+For target silhouette, we generated it from input mesh, and we empirically found that it is enough to alternate Ground Truth silhouette image. \textbf{Previous} result fails to converge to perceptive geometric shape hidden in target images, whereas \textbf{Proposed} result successfully reduces noise. Note that \textbf{Proposed} method only observes $\mathbf{\mathcal{C}}$ in order to infer noise-free geometry, whereas Previous method requires both $\mathbf{\mathcal{C}}$ and $\mathbf{S}$.
+% Resulting mesh preserves its silhouette information, as they provided silhouette loss to prevent vertices to evolve out of its silhouettes. 
+% In contrast, vertices within silhouette images are evolved without any shape constraints supervised by target images. 
+% Those vertices are guided to satisfy input mesh’s internal properties, as mesh losses does not consider geometric clues in target images. 
+% This results in optimized mesh failed to optimize, while only preserving boundary.
 
 \subsection{Limitations \& Future Directions}
+
 We summarize future directions of our method, including failure case and promising extension of proposed method.
 \paragraph{Adding Robust Positional Constraint Loss}
 Although our method can drastically reduce mesh noise, we found that optimized mesh is not maintaining topologically correct structure. 
 Specifically, we observed self-intersections between neighboring faces. 
 This problem can be naturally arisen since we did not consider relationship between neighboring vertices in our final loss. 
 Therefore, though vertices are evolved to have reduced noise, their evolving direction is totally random, lead to occur self-intersections between neighboring faces by corresponding (incorrectly evolved) neighboring vertices. 
-We illustrated this failure case in Figure 7.
+We illustrated this failure case in (Fig. \ref{fig:self_intersection}).
 
 
 \begin{figure}
-    \includegraphics[width=\columnwidth]{figures/4_future_edge_fitting.png}
-    \caption{Inset of each gradient. $G_{lw}$ is corrupted since geometric normal deviates around edge.}
-    \label{fig:edge_fitting}
-\end{figure}
-
-
-\begin{figure*}
-    \includegraphics[width=\textwidth]{figures/4_future_work_self_intersection.png}
-    \caption{Comparison of input mesh and optimized mesh. We zoomed up each geometry corresponds to image inset. 
+    \includegraphics[width=\columnwidth]{figures/4_future_work_self_intersection.png}
+    \caption{An example of self-intersection artifact. We zoomed up each geometry corresponds to image inset. 
     \textbf{Black artifacts} are observed in zoomed view in optimized mesh. We found that those are self-intersection between neighboring faces, since our positional constraint $L_{pos}$ does not consider distances between neighboring vertices. 
     This phenomenon is illustrated at the rightmost images of each zoomed view. 
     (a) For each iteration, vertices are optimized while only considering flatness of surfaces, not for topological correctness of geometry. 
@@ -90,12 +98,17 @@ We illustrated this failure case in Figure 7.
     Here, \textbf{\textcolor{ForestGreen}{Green vertex}} is optimized to \textbf{\textcolor{ForestGreen}{Green arrow}} direction so that it occludes another face. 
     (b) Consequently, there exists a self-intersection between neighboring faces (\textbf{Black line}) although the entire mesh noise is reduced, resulting self-occluded artifact.}
     \label{fig:self_intersection}
-\end{figure*}
+\end{figure}
 
 \paragraph{Edge Fitting}
 Although our method is able to minimize noisy vertices by treating $G_\mathcal{C}$ as noise-free geometric clue, however it failed to clean out noisy vertices around geometric edges. 
 We found that there is gradient magnitude difference between two images, as on edges $G_{lw}$ tends to have large deviation since it is the place where geometric normal hugely differs. 
 Our current $L_2$ loss of gradients cannot reflect this case, as they are evaluated pixel-by-pixel. 
-We visualized this case in Figure 8. 
+% We visualized this case in (Fig. \ref{fig:edge_fitting}). 
 Weighting color gradients by using gradients from depth, say $G_\mathcal{D}$, or developing an erosion kernel for $G_\mathcal{C}$ to reliably cover $G_{lw}$ seems worth trying.
 
+% \begin{figure}
+%     \includegraphics[width=\columnwidth]{figures/4_future_edge_fitting.png}
+%     \caption{Inset of each gradient. $G_{lw}$ is corrupted since geometric normal deviates around edge.}
+%     \label{fig:edge_fitting}
+% \end{figure}

@@ -4,7 +4,7 @@ We propose an optimization procedure that incrementally minimizes mesh vertex no
 Suppose we have vertices $V=\{V_i\in\mathbb{R}^3\}=\{V_0...V_n\}$ within input mesh $\mathcal{M}$ which is fused from input color $\mathcal{C}$ and depth $\mathcal{D}$ with intrinsic $K$ such that $\mathcal{M}=K^{-1}\left(\mathcal{C}\oplus \mathcal{D}\right)$. 
 Here, $\oplus$ denotes image registration operator.
 We define deformed vertices $V_d$, which has same shape as $V$ initialized with zero values i.e., $V_d=\{\mathbf{0}_0,...,\mathbf{0}_n\}$. 
-For every iteration, $V_d$ is optimized so that resulting vertices $V_o=V+V_d$ approximate noise-free geometry which looks perceptually similar with $\mathcal{C}$. 
+For every iteration, $V_d$ is optimized so that resulting vertices $V_o=V+V_d$ approximate noise-free geometry, so that its rendering $C$ looks perceptually similar with $\mathcal{C}$. 
 The main problem is how to find common geometric representations between $\mathcal{C}$ and $C$ to figure out which region is to be optimized (i.e., noisy). 
 
 \subsection{Exploting assumptions underlying existing SLAM datasets}
@@ -62,7 +62,7 @@ Since we assumed Lambertian surface and emitted radiance term is free up to any 
 We will drop any consideration of remaining terms in (Eqn. \ref{LTE_path_integral}). We do not consider emitted radiance i.e., albedo term $\mathit{P}\left(\bar{\mathrm{p}}_1\right)$ since this represents pure physical quantity of a geometry have, thus itself is consistent up to any geometric displacement (e.g., additive noise on vertices).
 \PJ{Does it sound clear?}
 We additionally treat indirect lighting term $\sum_{n=3}^\infty \mathit{P}(\bar{\mathrm{p}}_n)$ as it is; we will consider that indirect lighting cannot make a pixel value strongly deviated with neighbors where is originally have similar value within neighbors when only direct lighting is applied. 
-This seems feasible because (1) indirect lighting term uses identical rendering equation with direct lighting term except to hitpoints (2) its throughput is far smaller than direct lighting term, under Lambertian assumption (3) it is applied globally; to make a pixel saturated against neighbors indirect lighting have to be applied to only that pixel (4) in a photorealistic rendering domain, multiple bounces among diffuse material causes significant noise, hence often ignored\cite{moon2013robust}.
+This seems feasible because (1) indirect lighting term uses rendering equation, which is identical to direct lighting term except to hitpoints (2) its throughput is far smaller than direct lighting term, under Lambertian assumption (3) it is applied globally; to make a pixel saturated against neighbors indirect lighting have to be applied to only that pixel (4) in a photorealistic rendering domain, multiple bounces among diffuse material causes significant noise, hence often ignored\cite{moon2013robust}.
 
 Therefore, we conclude that radiance at a pixel $L_{i,j}(p_1 \rightarrow p_2)$ is mostly affected by \textbf{geometry term} in $\mathit{P}(\bar{\mathrm{p}}_2)$ i.e., 
 \begin{align}
@@ -83,8 +83,8 @@ Thus, there may exist different radiance values between $\mathcal{C}$ and $C$ th
 
 This naturally concludes that a loss minimizing radiance difference equals to matching \textbf{geometry term} in $C$ similar with $\mathcal{C}$.
 
-However, simply minimizing color difference i.e., $||\mathcal{C}-C||^2$ does not work, as the texture of $\mathcal{M} \sim \mathcal{C}$ contains real light information, furthermore we will cast a virtual light to saturate noisy vertices. 
-Therefore, $C$ have far different tone compared to $\mathcal{C}$ in a global manner. 
+However, simply minimizing color difference i.e., $||\mathcal{C}-C||^2$ does not work, as the texture of $\mathcal{M} \sim \mathcal{C}$ already contains real light information, furthermore we will cast a virtual light to saturate noisy vertices. 
+Therefore, $C$ have far different color tone compared to $\mathcal{C}$ in a global manner. 
 The main challenge is to detect geometric differences between images in a local manner, regardless of any radiance tone changes.
 
 \subsection{Detecting Geometric Information given Color Image and Its Rendering}

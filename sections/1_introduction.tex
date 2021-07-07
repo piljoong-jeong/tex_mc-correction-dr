@@ -2,12 +2,12 @@
 
 To satisfy increasing demand of 
 Augmented Reality (AR) technology, we required to obtain geometric information of observed real scene as precise as possible. 
-As precision of geometric detail is increased, we can augment virtual objects with more consistency from computer graphics field (rendering) perspective, and we are able to estimate camera poses from perfect correspondences from computer vision field (SLAM) perspective.
+As precision of geometric detail is increased, we can augment virtual objects with more consistency from computer graphics (Photorealistic Rendering) perspective, and we are able to estimate camera poses from perfect correspondences from computer vision (Simultaneous Localization and Mapping; SLAM) perspective.
 
 Capturing detailed geometry is still remain as technical challenge due to hardware/computational limitation of SLAM. 
 It is obvious that consumer-level depth sensing technology still has noisy observation. 
 We can cope this by divide a real scene with less detailed (coarse) voxels to smooting out noisy depth measurements when generating TSDF mesh. 
-In this way, however, fails to retain geometric detail even in the case of reconstructing simple geometry (e.g., edge between planes).
+In this way, however, it fails to retain geometric detail even in the case of reconstructing perceptually simple geometry (e.g., edge between planes).
 To preserve geometric detail, we still need to divide voxels as fine as possible where is geometrically complex. 
 This directly affects to rendering performance, as rendering requires primitive traversal in order to appropriately propagates lighting information for every single frame. 
 Due to those limitations, we are compromised to use TSDF meshes from acceptably coarse voxels, which have geometric incorrectness including noise. 
