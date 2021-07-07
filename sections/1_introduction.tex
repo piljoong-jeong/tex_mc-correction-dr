@@ -5,25 +5,30 @@ Augmented Reality (AR) technology, we required to obtain geometric information o
 As precision of geometric detail is increased, we can augment virtual objects with more consistency from computer graphics field (rendering) perspective, and we are able to estimate camera poses from perfect correspondences from computer vision field (SLAM) perspective.
 
 Capturing detailed geometry is still remain as technical challenge due to hardware/computational limitation of SLAM. 
-\PJ{TODO: actually, this is not true. Fine voxels can represent geometric detail but easily hindered by noise, whereas coarse mesh has resilience against noise but fails to represent where geometric detail is required e.g., edges}
 It is obvious that consumer-level depth sensing technology still has noisy observation. 
-We can cope this by divide a real scene with detailed (fine) voxels as precise as possible when generating TSDF mesh. 
-In this way, however, unnecessarily large number of triangles are generated even in the case of reconstructing simple geometry (e.g., plane). 
+We can cope this by divide a real scene with less detailed (coarse) voxels to smooting out noisy depth measurements when generating TSDF mesh. 
+In this way, however, fails to retain geometric detail even in the case of reconstructing simple geometry (e.g., edge between planes).
+To preserve geometric detail, we still need to divide voxels as fine as possible where is geometrically complex. 
 This directly affects to rendering performance, as rendering requires primitive traversal in order to appropriately propagates lighting information for every single frame. 
-Due to those limitations, we are compromised to use TSDF meshes from coarse voxels, which have geometric incorrectness including noise. 
+Due to those limitations, we are compromised to use TSDF meshes from acceptably coarse voxels, which have geometric incorrectness including noise. 
 Nevertheless, there is strong demand to perfect geometry captured from SLAM sequences. 
 
 Recent advances of Differentiable Rendering make it possible to optimize current input parameters by observing a set of given Ground Truth images. 
 This seems promising to SLAM, as they naturally capture Ground Truth color images whereas generating input TSDF mesh corrupted by noisy measurements. 
 However, it is unclear that how to interpret (perceptually encoded) geometric clues within color images, reflect those information into actual geometry to minimize its imperfection. 
 Moreover, there is some limitations hinder directly applying previous differentiable rendering techniques into SLAM dataset. 
-We explained such difficulties in \ref{fig:difference_simple_mesh_and_tsdf_mesh}.
+We explained such difficulties in (Fig. \ref{fig:difference_simple_mesh_and_tsdf_mesh}).
 
 Our main contribution is bridging the gap between perceptional noise-free geometric features from input color image and noisy geometric feature in input mesh. 
-\PJ{TODO: move this into method; this is not our main contribution, rather it is close to implementation detail.}
-To exploit this, we borrow a novel concept of image denoising using flashlight. Images taken with flashlight can hold additional features which are hard to detect from general geometric feature (e.g., depth, normal etc). 
-For example, in \cite{eisemann2004flash} \cite{petschnigg2004digital} flashy photography is used to enhance images taken from scene which has insufficient lighting condition. 
-\cite{moon2013robust} is pioneering work that adopt image enhancement using flashlight on photorealistic rendering domain, by casting virtual flashlights to capture a scene’s reflective / refractive features, which are not stored in traditional G-buffers. 
-Based on these approaches, we saturate noisy vertices by casting virtual light, which are never detected when rendered with mesh’s albedo only. 
-Please refer the leftmost image (rendered without light) and its connected image (rendered with virtual light) in \ref{fig:teaser} for details. 
+To exploit this, we interpreted input color image as a result of perfect renderer with perfect geometry. 
+Under certain assumptions, we argued that radiance is consistent if a point and its neighbors are lie on a same plane.
+Generally, it is not true for virtually rendered image with input mesh, as the mesh is composed with noisy vertices.
+Therefore, we optimized input mesh to have radiance consistency i.e., noise-free geometry which is input color image have.
+
+% \PJ{TODO: move this into method; this is not our main contribution, rather it is close to implementation detail.}
+% To exploit this, we borrow a novel concept of image denoising using flashlight. Images taken with flashlight can hold additional features which are hard to detect from general geometric feature (e.g., depth, normal etc). 
+% For example, in \cite{eisemann2004flash} \cite{petschnigg2004digital} flashy photography is used to enhance images taken from scene which has insufficient lighting condition. 
+% \cite{moon2013robust} is pioneering work that adopt image enhancement using flashlight on photorealistic rendering domain, by casting virtual flashlights to capture a scene’s reflective / refractive features, which are not stored in traditional G-buffers. 
+% Based on these approaches, we saturate noisy vertices by casting virtual light, which are never detected when rendered with mesh’s albedo only. 
+% Please refer the leftmost image (rendered without light) and its connected image (rendered with virtual light) in \ref{fig:teaser} for details. 
 We demonstrate our results, compare with result from previous method, and show that our method outperforms previous result.

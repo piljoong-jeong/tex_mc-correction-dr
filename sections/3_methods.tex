@@ -13,7 +13,7 @@ We found two common aspects within $\mathcal{C}$ taken from most of SLAM dataset
 \noindent \textbf{Lambertian-dominant}. 
 This naturally satiesfies since this is an assumption for vast majority of SLAM dataset, unless it is used for vaildating SLAM algorithm under non-Lambertian environment e.g., \cite{whelan2018reconstructing}. 
 In order to track accurate camera pose during SLAM, finding reliable feature correspondences are necessary.
-Generally, a point shown in two geometrically close images $\mathcal{C}_0$, $\mathcal{C}_1$ is chosen, which satisfies photometric consistency i.e., $E_{photo}=\arg\min_x \mathcal{C}_0\left(x+\overrightarrow{\mathrm{u}}\right)-\mathcal{C}_1\left(x\right)$. \cite{szeliski2010computer}
+Generally, a point shown in two images that shares overlapped region $\mathcal{C}_0$, $\mathcal{C}_1$ is chosen, which satisfies photometric consistency e.g., $E_{photo}=\arg\min_x \mathcal{C}_0\left(x+\overrightarrow{\mathrm{u}}\right)-\mathcal{C}_1\left(x\right)$. \cite{szeliski2010computer}
 This is because it has been empirically considered as 'static anchor' on a given scene; a point on a surface never deforms during capturing stage, and its value is direction-invariant so that the point has consistent pixel value wherever an image is taken from. 
 
 Interpreting photometric consistency in computer graphics field is trivial; this indicates that a point is lie on a Lambertian surface, such that a bi-directional reflectance $f(x, w_i, w_o)=c$, where $c\le 1$ is a constant.
@@ -50,14 +50,14 @@ Let us consider direct lighting term in (Eqn. \ref{LTE_path_integral}) first:
 
 \begin{align}
     \mathit{P}\left(\bar{\mathrm{p}}_2\right) & = \int_A && f\left(\mathrm{p}_2\rightarrow \mathrm{p}_1 \rightarrow \mathrm{p}_0\right)\cdot L_{e(i,j)}\left(\mathrm{p}_2\rightarrow \mathrm{p}_1\right) \cdot G\left(\mathrm{p}_1 \leftrightarrow \mathrm{p}_2\right) \nonumber \\
-    & = \int_A \Bigg[ && f\left(\mathrm{p}_2\rightarrow \mathrm{p}_1 \rightarrow \mathrm{p}_0\right)\cdot L_{e(i,j)}(\mathrm{p}_2\rightarrow \mathrm{p}_1) \nonumber \\ 
+    & = \int_A && \Bigg[ f\left(\mathrm{p}_2\rightarrow \mathrm{p}_1 \rightarrow \mathrm{p}_0\right)\cdot L_{e(i,j)}(\mathrm{p}_2\rightarrow \mathrm{p}_1) \nonumber \\ 
     & && \cdot V(\mathrm{p}_1 \leftrightarrow \mathrm{p}_2) \cdot \frac{|\cos(\theta_1)| |\cos(\theta_2)|}{||\mathrm{p}_1-\mathrm{p}_2||^2}\Bigg]
     \label{LTE_path_integral_direct_lighting}
 \end{align}
 
 Note that we omitted path differential $dA(\mathrm{p}_2)$ for brevity.
 
-Since we assumed Lambertian surface and emitted radiance term is free up to any geometric transformation, the term that affects to direct lighting value in (Eqn. \ref{LTE_path_integral_direct_lighting}) is \textbf{geometry term}: visilbility, incident angles, and distance between hitpoints.
+Since we assumed Lambertian surface and emitted radiance term is free up to any geometric transformation, the term that affects to direct lighting value in (Eqn. \ref{LTE_path_integral_direct_lighting}) is \textbf{geometry term}: visilbility, incident angles, and distance between hitpoints. \PJ{TODO: parameterize hitpoint as a sum of barycentric coords of vertex positions within a face.}
 
 We will drop any consideration of remaining terms in (Eqn. \ref{LTE_path_integral}). We do not consider emitted radiance i.e., albedo term $\mathit{P}\left(\bar{\mathrm{p}}_1\right)$ since this represents pure physical quantity of a geometry have, thus itself is consistent up to any geometric displacement (e.g., additive noise on vertices).
 \PJ{Does it sound clear?}
